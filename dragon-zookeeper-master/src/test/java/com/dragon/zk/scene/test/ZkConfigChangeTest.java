@@ -4,6 +4,7 @@ import org.I0Itec.zkclient.ZkClient;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.dragon.zk.scene.ConfigChangeSubscriber;
+import com.dragon.zk.scene.ZookeeperUtils;
 
 import junit.framework.TestCase;
 
@@ -18,14 +19,21 @@ public class ZkConfigChangeTest extends TestCase {
 		this.zkClient = ((ZkClient) ctx.getBean("zkClient"));
 		this.zkConfig = ((ConfigChangeSubscriber) ctx.getBean("configChangeSubscriber"));
 		this.zkClient.deleteRecursive("/zkSample");
+		if(!this.zkClient.exists("/zkSample/conf/test1.properties")) {
+			ZookeeperUtils.mkPaths(this.zkClient, "/zkSample/conf/test1.properties");
+		}
+		if(!this.zkClient.exists("/zkSample/conf/test2.properties")) {
+			ZookeeperUtils.mkPaths(this.zkClient, "/zkSample/conf/test2.properties");
+		}
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		// TODO Auto-generated method stub
 		super.tearDown();
 	}
 	
-	
+	public void testSubscribe() {
+		
+	}
 
 }
